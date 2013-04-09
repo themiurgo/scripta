@@ -1,0 +1,97 @@
+#!/usr/bin/env python
+#-*- coding: utf-8 -*-
+
+import argparse
+import numpy as np
+import itertools
+
+"""
+
+{time: value}
+"""
+
+d1 = {
+    1: 1,
+    4: 2,
+    8: 2
+}
+d2 = {
+    1: 1,
+    4: 2,
+    6: 1,
+    8: 2,
+}
+
+l1 = [(1,1), (4,2), (6,1), (8,2)]
+
+def dict_to_timeseries(the_dict, start_time=None, end_time=None, default_value=0):
+    """Convert a dict to a timeseries.
+
+    the_dict -- the timeseries in format {time_bin: value, ...}
+    start_time -- starting time
+    end_time -- ending time
+    default_value -- starting value
+
+    """
+    keys = sorted((int(k) for k in the_dict.iterkeys()))
+    value = default_value
+    if not start_time:
+        start_time = min(keys)
+    if not end_time:
+        end_time = max(keys)
+    for key in xrange(start_time, end_time+1):
+        if key in the_dict:
+            value = the_dict[key]
+        yield value
+
+def list_to_timeseries(the_list, start_time=None, end_time=None, default_value=0):
+    """Convert a list to a timeseries.
+
+    the_list -- the timeseries in format [(time_bin, value), ...]
+    start_time -- starting time
+    end_time -- ending time
+    default_value -- starting value
+
+    """
+    value = default_value
+    if not start_time:
+        start_time = the_list[0][0]
+    if not end_time:
+        end_time = the_list[-1][0]
+    iterator = iter(the_list)
+    curr = next(iterator)
+    for time in xrange(start_time, end_time+1):
+        while curr[0] < time:
+            curr = next(iterator)
+        if int(curr[0]) == time:
+            value = curr[1]
+        yield value
+
+#if __name__ == "__main__":
+    #t1 = list(dict_to_timeseries(d1))
+    #t2 = list(dict_to_timeseries(d2))
+    #m1 = marginal(t1)
+    #m2 = marginal(t2)
+    #m3 = conjunct(t1,t2)
+    #mi = mutual_info(m1, m2, m3)
+
+
+if __name__ == "__main__":
+    # Parse arguments
+    parser = argparse.ArgumentParser(
+        description="Convert a graph edgelist to an adjacency matrix.",
+    )
+    parser.add_argument(
+        '-f',
+        type=argparse.FileType('r'),
+        default=sys.stdin,
+        help="Input file (default stdin)",
+    )
+    parser.add_argument(
+        '-o',
+        #type=argparse.FileType('w'), # FIXME
+        #default=sys.stdout, # FIXME
+        default="outfile.out", # FIXME
+        help="Output file (default stdout)",
+    )
+    args = parser.parse_args()

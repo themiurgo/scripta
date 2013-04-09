@@ -1,0 +1,31 @@
+import csv
+import sys
+from pylab import *
+
+fname_matrix = sys.argv[1]
+curbed_nodes = sys.argv[2:]
+
+
+def normalize_rows(arr):
+    rows, cols = arr.shape
+    for row in xrange(rows):
+        arr[row,:] /= sum(arr[row,:])
+
+arr = zeros((256,256))
+with open(sys.argv[1], "r") as f:
+    reader = csv.reader(f, delimiter=" ")
+    for row in reader:
+        val = float64(float(row[2]))
+        if row[0] in curbed_nodes or row[1] in curbed_nodes:
+            if row[1] == row[0]:
+                val = 1
+            else:
+                val = 0
+        arr[int(row[0]),int(row[1])] = val
+
+normalize_rows(arr)
+rows, cols = arr.shape
+for row in xrange(rows):
+    for col in xrange(cols):
+        if arr[row,col] > 0:
+            print row, col, arr[row,col]
