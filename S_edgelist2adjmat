@@ -28,8 +28,8 @@ if __name__ == "__main__":
         help="Output file (default stdout)",
     )
     parser.add_argument('-skip', help="Skip first N lines", type=int, default=0)
-    parser.add_argument('-oneindex', help="Indexes start from 1",
-            default=False) # FIXME change name
+    parser.add_argument('-oneindex', help="Edgelist indexes start from 1",
+            default=False)
     args = parser.parse_args()
 
     infile = args.f
