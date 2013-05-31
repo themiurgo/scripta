@@ -23,9 +23,8 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         '-o',
-        #type=argparse.FileType('w'), # FIXME
-        #default=sys.stdout, # FIXME
-        default="outfile.out", # FIXME
+        type=argparse.FileType('w'),
+        default=sys.stdout,
         help="Output file (default stdout)",
     )
     parser.add_argument('-skip', help="Skip first N lines", type=int, default=0)
@@ -37,4 +36,4 @@ if __name__ == "__main__":
     outfile = args.o
     skip_lines(infile, args.skip)
     arr = read_edgelist(infile)
-    write_matrix(arr, args.o) # FIXME fname to f_ptr
+    write_matrix(arr, args.o) 
