@@ -31,4 +31,4 @@ CSV file with a line for each node, and each line with a column for each
 node, with the following format.
 
 `[       , label1, label2, ..., labelN]`
-`[label1], weight11, weight12, ..., weight1N]
+`[label1], weight11, weight12, ..., weight1N]`
